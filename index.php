@@ -65,10 +65,66 @@
             </div>
         </div>
     </div>
-        <!---->
-
-    <!--Excluir-->
+       
     
+
+
+    <!--card-->
+    <div class="container mt-4">
+        <?php
+        include("db.php");
+        $sql = "SELECT * FROM cadastro";
+        $resultado = $db->query($sql);
+
+        if ($resultado->rowCount() > 0) {
+            while ($registro = $resultado->fetch(PDO::FETCH_ASSOC)) {
+
+                echo '<div class="card mb-3">';
+                echo '<div class="card-header">' . $registro['name'] . '</div>';
+                echo '<div class="card-body">';
+                echo '<h5 class="card-title">' . $registro['name'] . '</h5>';
+                echo '<p class="card-text">Data: ' . $registro['date'] . '</p>';
+                echo '</div>';
+
+            }
+        } else {
+            echo '<p>Nenhum registro encontrado.</p>';
+        }
+        ?>
+    </div>
+    
+    <?php
+    include("db.php");
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Certifique-se de que o ID foi enviado através do formulário
+        if (isset($_POST["id"])) 
+        {
+            $id = $_POST["id"];
+
+            // Preparando a consulta SQL para exclusão
+            $sql = "DELETE FROM CADASTRO WHERE ID = :id";
+            $stmt = $db->prepare($sql);
+
+            // Vinculando o parâmetro :id
+            $stmt->bindParam(':id', $id);
+
+            // Executando a consulta SQL
+            $resultado = $stmt->execute();
+
+            // Verificando se a exclusão foi bem-sucedida
+            if (!$resultado) {
+                var_dump($stmt->errorInfo());
+                exit;
+            } else {
+                echo $stmt->rowCount() . " linha deletada";
+            }
+        } else {
+            echo "ID não fornecido para exclusão.";
+        }
+    }
+    ?>
+
+
     <!--Editar-->
 
 
