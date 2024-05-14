@@ -1,0 +1,54 @@
+import pygame
+from pygame.locals import *
+import sys
+
+# Inicialização do Pygame
+pygame.init()
+
+# Configuração da janela
+size = width, height = 200, 100
+screen = pygame.display.set_mode(size)
+
+# Configuração da fonte
+font = pygame.font.Font(None, 40)
+
+# Tempo inicial em segundos
+initial_time = 60
+
+# Loop principal
+while initial_time >= 0:
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+    # Limpar a tela
+    screen.fill((0, 0, 0))
+
+    # Converter os segundos para o formato de horas:minutos:segundos
+    time_str = '{:02d}:{:02d}'.format(initial_time // 60, initial_time % 60)
+
+    # Desenhar o tempo digital
+    fontimg = font.render(time_str, 1, (255, 255, 255))
+    screen.blit(fontimg, (20, 30))
+
+    # Atualizar a tela
+    pygame.display.flip()
+
+    # Decrementar o tempo
+    initial_time -= 1
+
+    # Atraso de 1 segundo
+    pygame.time.delay(1000)
+
+# Exibir "Fim do cronômetro" após o término
+end_font = pygame.font.Font(None, 30)
+end_text = end_font.render("Fim do cronômetro", True, (255, 255, 255))
+end_rect = end_text.get_rect(center=(width // 2, height // 2))
+screen.blit(end_text, end_rect)
+pygame.display.flip()
+
+# Esperar 2 segundos antes de fechar a janela
+pygame.time.delay(2000)
+pygame.quit()
+sys.exit()
